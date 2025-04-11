@@ -1,0 +1,12 @@
+#ifndef AUTOMATA_H
+#define AUTOMATA_H
+
+#include "AutomataBase.hpp"
+#include "DFA.hpp"
+
+namespace Auto
+{
+
+} // namespace Auto
+
+#endif // AUTOMATA_H
