@@ -31,6 +31,7 @@
 *.out
 *.app
 
+build/
 
 .temp/
 exauto

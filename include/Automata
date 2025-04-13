@@ -1,5 +1,5 @@
-#ifndef AUTOMATA_H
-#define AUTOMATA_H
+#ifndef AUTOMATA
+#define AUTOMATA
 
 #include "AutomataBase.hpp"
 #include "DFA.hpp"

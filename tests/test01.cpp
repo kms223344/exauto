@@ -1,11 +1,11 @@
+#include <iostream>
+#include <fstream>
+
 #include <cstdio>
 #include <cassert>
-
 #include <unistd.h>
 
-#include <iostream>
-
-#include "Automata"
+#include <Automata>
 
 using namespace std;
 using namespace Auto;
@@ -32,6 +32,8 @@ int main(int argc, char* argv[])
         else M.config(i, j, i);
     }
 
+    M.save("test01.dfa");
+
     auto c = M.instance();
 
     while(!feof(stdin))
@@ -51,7 +53,7 @@ int main(int argc, char* argv[])
 
     while(c.queued_length() != 0)
     {
-        int len = c.run(2);
+        int len = c.run(1);
 
         if(c.error())
         {
@@ -63,25 +65,4 @@ int main(int argc, char* argv[])
 
         c.show_status(cout);
     }
-
-    auto cc = M.instance();
-    cout<<examine_bytestring("안녛아세")<<endl;
-
-    cc.recv("abcd");
-
-    while(cc.queued_length() != 0)
-    {
-        int len = cc.run(1);
-
-        if(cc.error())
-        {
-            cout<<"[!] Error on running... errno: "<<cc.error()<<endl;
-            cout<<"[!] While processing : "<<cc.queued_next()<<endl;
-            cout<<"[!] Left input length : "<<cc.queued_length()<<"."<<endl;
-            exit(-1);
-        }
-
-        cc.show_status(cout);
-    }
-
 }

@@ -1,18 +1,23 @@
 CC = g++
 CFLAGS = --std=c++2a
-OBJS = exauto.o DFA.o AutomataBase.o
-TARGET = exauto
+OBJS = DFA.o AutomataBase.o
+TARGET_LIB = libexauto.a
+TARGET = test
  
-all: $(TARGET)
+all: $(TARGET_LIB)
 
-$(TARGET) : $(OBJS)
-	$(CC) -o $@ $(OBJS) $(LIBS)
+$(TARGET_LIB) : $(OJBS)
+	ar rc $(TARGET_LIB) $(OBJS)
+
+test1 : $(OBJS) exauto.o
+	ar rc libexauto.a $(OBJS)
+	$(CC) -o $@ $@.o $(LIBS)
  
 clean:
 	rm -f *.o
-	rm -f $(TARGET)
+	rm -f $(TARGET) $(TARGET_LIB)
 	
-exauto.o: Automata exauto.cpp
+test.o: Automata test.cpp
 	$(CC) $(CFLAGS) -c $*.cpp -o $@
 
 AutomataBase.o: AutomataBase.hpp AutomataBase.cpp
