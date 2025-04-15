@@ -82,6 +82,8 @@ public:
     size_t queued_next() const;
     bool error() const;
 
+    size_t now();
+
     virtual size_t run(size_t step) = 0;
     virtual void show_status(std::ostream& os) const = 0;
 };

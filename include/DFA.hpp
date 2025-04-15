@@ -5,6 +5,7 @@
 
 #include <cassert>
 #include <map>
+#include <optional>
 #include <ostream>
 #include <string>
 #include <vector>
@@ -25,11 +26,13 @@ private:
 
 public:
 
+    DFATransition(const DFATransition& A): Q(A.Q), S(A.S), transition(A.transition){}
+
     int config(size_t q1, size_t s, size_t q2);
     std::pair<size_t, bool> operator()(size_t q, size_t s) const;
 
     void write(std::ostream& os) const;
-    static std::optional<DFATransition> read(std::istream& is);
+    static std::optional<DFATransition> read(const Stateconf& Q, const Inputconf& S, std::istream& is);
 
     friend class DFA;
 };
@@ -43,6 +46,7 @@ private:
 
     DFATransition transition;
 
+    DFA(Stateconf Q, Inputconf S, DFATransition tr);
 public:
     DFA(Stateconf Q, Inputconf S);
     //DFA(std::string path);
@@ -51,6 +55,7 @@ public:
     ExecuterDFA instance() const;
 
     int save(std::string path) const;
+    static std::optional<DFA> load(std::string path);
     friend class ExecuterDFA;
 };
 

@@ -155,6 +155,31 @@ void Stateconf::write(std::ostream& os) const
         os.write(reinterpret_cast<const char*>(&i), sizeof(i));    
 }
 
+std::optional<Stateconf> Stateconf::read(std::istream& is)
+{
+    size_t nState;
+    is.read(reinterpret_cast<char*>(&nState), sizeof(nState));
+
+    Stateconf Q(nState);
+
+    // Todo: Before setBegin, setEnd, we have to check the consistency of given value.
+    size_t q0;
+    is.read(reinterpret_cast<char*>(&q0), sizeof(q0));
+    Q.setBegin(q0);
+
+    size_t n;
+    is.read(reinterpret_cast<char*>(&n), sizeof(n));
+
+    for(int i=0;i<n;i++)
+    {
+        size_t qf;
+        is.read(reinterpret_cast<char*>(&qf), sizeof(qf));
+        Q.setEnd(qf);
+    }
+
+    return Q;
+}
+
 // Executer
 Executer::Executer(Stateconf Q, Inputconf S):Q(Q), S(S), q_now(Q.start_state()), _errno(0) {}
 int Executer::recv(const std::vector<size_t>& vec)
@@ -173,4 +198,6 @@ bool Executer::isfin() const {return Q.isfin(q_now);}
 size_t Executer::queued_length() const {return stream.size();}
 size_t Executer::queued_next() const {return stream.front();}
 bool Executer::error() const {return _errno;}
+
+size_t Executer::now(){return q_now;}
 } // namespace Auto

@@ -17,22 +17,7 @@ int main(int argc, char* argv[])
     freopen(NULL, "rb", stdin);
     assert(stdin != NULL);
 
-    Stateconf Q(27);
-    Q.setBegin(0);
-    Q.setEnd(26);
-
-    Inputconf S(26);
-    S.setseq(0, "abcdefghijklmnopqrstuvwxyz");
-
-    DFA M(Q, S);
-
-    for(int i=0;i<26;i++) for(int j=0;j<26;j++)
-    {
-        if(i == j) M.config(i, i, i+1);
-        else M.config(i, j, i);
-    }
-
-    M.save("test01.dfa");
+    DFA M = DFA::load("test01.dfa").value();
 
     auto c = M.instance();
 
@@ -67,7 +52,5 @@ int main(int argc, char* argv[])
     // }
 
     c.run(-1);
-    // srand(time(0));
-    // return c.now()+!(rand()%10);
     return c.now();
 }
