@@ -21,7 +21,9 @@ add_library(exauto STATIC ${SOURCES})
 
 add_executable(test01 tests/test01.cpp)
 add_executable(test02 tests/test02.cpp)
+add_executable(test03 tests/test03.cpp)
 add_executable(genabc tests/gen/genabc.c)
 
 target_link_libraries(test01 exauto)
 target_link_libraries(test02 exauto)
+target_link_libraries(test03 exauto)
