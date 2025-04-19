@@ -10,51 +10,53 @@ FONT = 'Consolas'
 path = None
 output = None
 
-def help():
-    print(
-        """
-Usage: python visualize.py [options]
-Options:
-    -h, --help          Show this help message and exit
-    --path=PATH         Path to the DFA file
-    --output=OUTPUT     Output file name (without extension)
-    --font=FONT        Font name for the nodes (default: Consolas)
-        """
-    )
 
-try:
-    opts, args = getopt.getopt(sys.argv[1:], "h", ["help", "path=", "output=", "font="])
-except getopt.GetoptError as err:
-    print(err)
-    sys.exit(1)
+def parse_args():
+    def help():
+        print(
+            """
+    Usage: python visualize.py [options]
+    Options:
+        -h, --help          Show this help message and exit
+        --path=PATH         Path to the DFA file
+        --output=OUTPUT     Output file name (without extension)
+        --font=FONT        Font name for the nodes (default: Consolas)
+            """
+        )
+    global path, output, FONT
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "h", ["help", "path=", "output=", "font="])
+    except getopt.GetoptError as err:
+        print(err)
+        sys.exit(1)
 
-for o, a in opts:
-    if o in ("-h", "--help"):
-        help()
-        sys.exit(0)
-    elif o in ("--path"):
-        if a:
-            path = a 
-            if not os.path.exists(path):
-                print("File not found.")
+    for o, a in opts:
+        if o in ("-h", "--help"):
+            help()
+            sys.exit(0)
+        elif o in ("--path"):
+            if a:
+                path = a 
+                if not os.path.exists(path):
+                    print("File not found.")
+                    sys.exit(1)
+            else:
+                help()
+                sys.exit(1)
+        elif o in ("--output"):
+            if a:
+                output = a
+            else:
+                help()
+                sys.exit(1)
+        elif o in ("--font"):
+            if a:
+                FONT = a
+            else:
+                help()
                 sys.exit(1)
         else:
-            help()
-            sys.exit(1)
-    elif o in ("--output"):
-        if a:
-            output = a
-        else:
-            help()
-            sys.exit(1)
-    elif o in ("--font"):
-        if a:
-            FONT = a
-        else:
-            help()
-            sys.exit(1)
-    else:
-        assert False, "Unhandled option"
+            assert False, "Unhandled option"
 
 def get_DFA(path: str):
     f = open(path, 'rb')
@@ -106,6 +108,7 @@ def get_DFA(path: str):
 
     
 def main():
+    parse_args()
     global path, output
     if path == None:
         path = input("Enter the path to the DFA file: ")
